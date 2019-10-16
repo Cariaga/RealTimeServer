@@ -1,0 +1,27 @@
+{
+  "name": "myapp3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cron-cluster": "^1.1.3",
+    "express": "^4.17.1",
+    "helmet": "^3.21.1",
+    "http": "0.0.0",
+    "multi-loggerjs": "^1.0.0",
+    "needle": "^2.4.0",
+    "path": "^0.12.7",
+    "pretty-error": "^2.1.1",
+    "redis": "2.8.0",
+    "socket.io": "^2.3.0",
+    "socket.io-monitor": "^2.0.1",
+    "socket.io-redis": "^5.2.0",
+    "socketio-jwt-auth": "^0.1.0"
+  }
+}
