@@ -11,6 +11,7 @@ app.get('/', function (req, res) { res.status(200).send("test"); });
 
 io.on('connection', (socket) => { 
 console.log("connected");
+
 socket.on('GPS', function (data) {
 });
 socket.on('Chip', function (data) {
