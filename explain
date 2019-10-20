@@ -1,3 +1,29 @@
 //--ping location
 //--Racer trigger compleation time
 //--Internal timer per ongoing Racer
+
+
+
+//in the redis 256bytes is needed slighly over estimated
+//2.56mb in a 10,000 Pigeon race
+{
+  "GameID": "qwertcfi",
+  "PigeonId": "qwertcfiqwertcfi",
+  "location": "40.689060,-74.044636",
+  "SomeOtherKey": "qwertcfi",
+  "AnotherKey": "qwertcfi"
+}
+// expected usage redis 100 bytes 
+//1mb in a 10,000 pigeon race
+{
+  "GameID": "qwertcfi",
+  "PigeonId": "qwertcfiqwertcfi",
+  "location": "40.689060,-74.044636",
+}
+
+//0.8mb in a 10,000 pigeon race optimized
+{
+  "G": "qwertcfi",
+  "P": "qwertcfiqwertcfi",
+  "L": "40.689060,-74.044636",
+}
