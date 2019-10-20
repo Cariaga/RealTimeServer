@@ -1,23 +1,32 @@
 const app = require('express')();
-//exports.app = app;
+module.exports.app = app;
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const redisAdapter = require('socket.io-redis');
 io.adapter(redisAdapter({ host: 'localhost', port: 6379 }));
 const securitySetting=  require('./Shared/securitySetting');
 var redis = require('redis').createClient()
- 
+const helmet = require('helmet');
+
+app.use(helmet());
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'"]
+    }
+}));
+app.disable('x-powered-by');
+app.use(helmet.noCache());
+app.use(helmet.permittedCrossDomainPolicies());
+app.use(helmet.referrerPolicy({ policy: 'same-origin' }));
+
 app.get('/', function (req, res) { res.status(200).send("test"); });
 
 io.on('connection', (socket) => { 
 console.log("connected");
 
-socket.on('GPS', function (data) {
-});
-socket.on('Chip', function (data) {
-});
-socket.on('RacerToken', function (data) {
-  //get the connected PAD check if it is accociated with the RacerToken
+socket.on('Message', function (data) {
+  
 });
 
 
