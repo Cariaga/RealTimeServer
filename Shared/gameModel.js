@@ -12,7 +12,7 @@ var PigeonProperties ={//the key used in redis is the abstracted key that is 1 t
 
 
 
-console.log(bytes);
+console.log(PigeonProperties);
 
 
 
