@@ -4,7 +4,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const redisAdapter = require('socket.io-redis');
 const game = require('./Shared/game');
-
+const model = require('./Shared/gameModel');
 io.adapter(redisAdapter({ host: 'localhost', port: 6379 }));
 const securitySetting=  require('./Shared/securitySetting');
 var redis = require('redis').createClient()
