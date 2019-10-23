@@ -3,7 +3,7 @@
 
 
 
-    var socket = io("http://localhost:3000/my-namespace?token=abc2");//or set inside http://localhost
+    var socket = io("http://localhost:3000/Admin-namespace?token=abc2");//or set inside http://localhost
     socket.on('connect', function(){});
     socket.on('Event', function(data){
         console.log('event '+data);
@@ -28,6 +28,7 @@
     // do something with err
     });
     //========================================
+    
     function TriggerChipCheck(){
         socket.emit('ChipKey', 'IKSPFKCLAPSOFEWF');
     }

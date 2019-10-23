@@ -89,7 +89,7 @@ app.get('/', function (req, res) {
 
 
 //names space is equivalent to route on client without using express route you can sepereate application logic with namespaces
-const PlayerIO = io.of('/my-namespace');
+const PlayerIO = io.of('/player-namespace');
 
 PlayerIO.on('connection', (socket) => { 
   let token = socket.handshake.query.token;
@@ -118,6 +118,46 @@ PlayerIO.on('connection', (socket) => {
 
 const AdminIO = io.of('/Admin-namespace');
 
+var redis = require('redis').createClient()
+var CronJob = require('cron-cluster')(redis).CronJob
+
+  function doCron () {
+    var job = new CronJob({
+      cronTime: '* * * * * *', 
+      onTick: function () {
+          // Do some stuff here
+          
+      }
+    })
+    job.start();
+  }
+
+
+AdminIO.on('connection', (socket) => { 
+  let token = socket.handshake.query.token;
+  console.log("connected :"+token);
+  
+  let refreshIntervalId= setInterval(function() {
+    // Do something every 5 seconds
+    console.log(token);
+  }, 5000);
+
+
+
+  socket.on('error', (error) => {
+    console.log("Socket error : "+error);
+    clearInterval(refreshIntervalId);
+  });
+  socket.on('disconnect', function (reason) {
+    console.log("disconnection : "+reason);
+    clearInterval(refreshIntervalId);
+  });
+  socket.on('disconnecting', (reason) => {
+    let rooms = Object.keys(socket.rooms);
+    console.log('disconnecting '+rooms);
+    clearInterval(refreshIntervalId);
+  });
+});
 
 
 app.use(function (err, req, res, next) {
