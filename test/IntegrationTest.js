@@ -17,10 +17,7 @@ describe("Real Time Server", function() {
         let array =[];
         let bytes=0;
         for(var i =0;i<10000;i++){
-
-            bytes=bytes+byteof(safeStringify(PigeonProperties));
-
-        // array.push(PigeonProperties);
+            bytes=bytes+byteof(safeStringify(PigeonProperties));   
         }
         expect(bytes).equals(2620000);
             });
