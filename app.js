@@ -14,13 +14,8 @@ const securitySetting=  require('./Shared/securitySetting');
 
 var redis = require('redis').createClient()
 const helmet = require('helmet');
-
-
-
 const nSQL = require("nano-sql").nSQL;
 const RedisAdapter = require("nano-redis").RedisAdapter;
-
-
 nSQL("Race") // table name
 .model([ // data model
     {key: "GameID", type: "string", props: ["pk"]}, // primary key
