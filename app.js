@@ -13,12 +13,6 @@ io.adapter(redisAdapter({ host: 'localhost', port: 6379 }));
 const securitySetting=  require('./Shared/securitySetting');
 const gameController = require('./Shared/gameController');
 
-
-
-
-
-
-
 app.use(helmet());
 app.use(helmet.contentSecurityPolicy({
   directives: {

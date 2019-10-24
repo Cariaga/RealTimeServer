@@ -116,6 +116,18 @@ module.exports.TotalCompletedRacers= function TotalCompletedRacers(GameID){//cle
       console.log(error);
     })
 }
+module.exports.TotalActiveRacesByAssociation= function TotalActiveRacesByAssociation(GameID){//clear out the memory for the game
+  connect().then(() => {
+      // add record
+      return nSQL("Race")
+      .query("select(*)")
+      .where(['GameID'=GameID])
+      .exec();
+  })
+  .catch((error)=>{
+    console.log(error);
+  })
+}
 
 
 
