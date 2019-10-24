@@ -104,7 +104,7 @@ module.exports.EndGame= function EndGame(GameID){//clear out the memory for the 
     })
 }
 
-module.exports.TotalCompletedRacers= function TotalCompletedRacers(GameID){//clear out the memory for the game
+module.exports.TotalCompletedRacersByAssociationGameID= function TotalCompletedRacersByAssociationGameID(GameID){//clear out the memory for the game
     connect().then(() => {
         // add record
         return nSQL("Race")
@@ -116,7 +116,7 @@ module.exports.TotalCompletedRacers= function TotalCompletedRacers(GameID){//cle
       console.log(error);
     })
 }
-module.exports.TotalActiveRacesByAssociation= function TotalActiveRacesByAssociation(GameID){//clear out the memory for the game
+module.exports.TotalActiveRacesByAssociation= function TotalActiveRacesByAssociation(){
   connect().then(() => {
       // add record
       return nSQL("Race")
@@ -128,6 +128,19 @@ module.exports.TotalActiveRacesByAssociation= function TotalActiveRacesByAssocia
     console.log(error);
   })
 }
+module.exports.TotalActiveAssociation= function TotalActiveAssociation(){
+  connect().then(() => {
+      // add record
+      return nSQL("Race")
+      .query("select(*)")
+      .where(['GameID'=GameID])
+      .exec();
+  })
+  .catch((error)=>{
+    console.log(error);
+  })
+}
+
 
 
 
