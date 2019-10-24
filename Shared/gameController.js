@@ -18,9 +18,12 @@ nSQL("Race").model(Columns).config({
         // identical to config object for https://www.npmjs.com/package/redis
         host: "localhost"
     })
-});
+}).connect();
+
+
 module.exports.SelectAllRaces = function SelectAllRaces(){
-  nSQL("Race").query("describe").exec().then(function(rows) {console.log(rows)});
+  //  console.log("test");
+ nSQL().query("select").exec().then(x=>console.log("TEST"+x));
 }
 
 module.exports.UpsertRacer = function UpsertRacer(GameID,PegionID,Location,FinishedTime,DeviceID,AssciationID){
