@@ -104,11 +104,11 @@ module.exports.EndGame= function EndGame(GameID){//clear out the memory for the 
     })
 }
 
-module.exports.CompletedRacers= function CompletedRacers(GameID){//clear out the memory for the game
+module.exports.TotalCompletedRacers= function TotalCompletedRacers(GameID){//clear out the memory for the game
     connect().then(() => {
         // add record
         return nSQL("Race")
-        .query("delete")
+        .query("select(*)")
         .where(['GameID'=GameID])
         .exec();
     })
