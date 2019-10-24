@@ -11,53 +11,7 @@ const model = require('./Shared/gameModel');
 io.adapter(redisAdapter({ host: 'localhost', port: 6379 }));
 
 const securitySetting=  require('./Shared/securitySetting');
-
-var redis = require('redis').createClient()
-const helmet = require('helmet');
-const nSQL = require("nano-sql").nSQL;
-const RedisAdapter = require("nano-redis").RedisAdapter;
-nSQL("Race") // table name
-.model([ // data model
-    {key: "GameID", type: "string", props: ["pk"]}, // primary key
-    {key: "PegionID", type: "string"},
-    {key: "Location", type: "string"},
-    {key: "FinishedTime", type: "string"},
-    {key: "DeviceID", type: "string"},
-    {key: "AssciationID", type: "string"},
-])
-.config({
-    mode: new RedisAdapter({ // required
-        // identical to config object for https://www.npmjs.com/package/redis
-        host: "localhost"
-    })
-}).connect().then(() => {
-    // add record
-    return nSQL("Race").query("upsert", {GameID: "Jeb", PegionID: 30, Location: 30, FinishedTime: 30, DeviceID: 30, AssciationID: 30,}).exec();
-})
-.catch((error)=>{
-  console.log(error);
-})
-
-.then(() => {
-  //select record
- return nSQL("Race").query("select").exec();
-})
-.catch((error)=>{
-  console.log(error);
-})
-.then((rows) => {
-  console.log(rows) // [{id: "1df52039af3d-a5c0-4ca9-89b7-0e89aad5a61e", name: "Jeb", age: 30}]
-})
-.catch((error)=>{
-  console.log(error);
-})
-.then(() => {
-  // delete record
-  return nSQL("Race").query("delete", {name: "Jeb", age: 30}).exec();
-})
-.catch((error)=>{
-console.log(error);
-});
+const gameController = require('./Shared/gameController');
 
 
 
