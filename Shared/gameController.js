@@ -41,7 +41,7 @@ console.log(error);
 });
 
 
-function UpsertPlayer(GameID,PegionID,Location,FinishedTime,DeviceID,AssciationID){
+module.exports.UpsertPlayer = function UpsertPlayer(GameID,PegionID,Location,FinishedTime,DeviceID,AssciationID){
     connect().then(() => {
         // add record
         return nSQL("Race")
@@ -54,7 +54,7 @@ function UpsertPlayer(GameID,PegionID,Location,FinishedTime,DeviceID,AssciationI
     })
 }
 
-function StopTimePlayer(GameID,PegionID,FinishedTime,DeviceID){
+module.exports.StopTimePlayer= function StopTimePlayer(GameID,PegionID,FinishedTime,DeviceID){
     connect().then(() => {
         // add record
         return nSQL("Race")
@@ -66,7 +66,7 @@ function StopTimePlayer(GameID,PegionID,FinishedTime,DeviceID){
       console.log(error);
     })
 }
-function SelectPlayersOfGameWithAssociation(GameID,AssciationID){
+module.exports.SelectPlayersOfGameWithAssociation= function SelectPlayersOfGameWithAssociation(GameID,AssciationID){
     connect().then(() => {
         // add record
         return nSQL("Race")
@@ -79,7 +79,7 @@ function SelectPlayersOfGameWithAssociation(GameID,AssciationID){
     })
 }
 
-function SelectPlayersOfGame(GameID){
+module.exports.SelectPlayersOfGame= function SelectPlayersOfGame(GameID){
     connect().then(() => {
         // add record
         return nSQL("Race")
