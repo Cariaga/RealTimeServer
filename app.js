@@ -123,7 +123,7 @@ var CronJob = require('cron-cluster')(redis).CronJob
           // Do some stuff here
           
       }
-    })
+    });
     job.start();
   }
 
