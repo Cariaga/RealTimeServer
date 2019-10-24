@@ -41,7 +41,7 @@ console.log(error);
 });
 
 
-module.exports.UpsertPlayer = function UpsertPlayer(GameID,PegionID,Location,FinishedTime,DeviceID,AssciationID){
+module.exports.UpsertRacer = function UpsertRacer(GameID,PegionID,Location,FinishedTime,DeviceID,AssciationID){
     connect().then(() => {
         // add record
         return nSQL("Race")
@@ -54,7 +54,7 @@ module.exports.UpsertPlayer = function UpsertPlayer(GameID,PegionID,Location,Fin
     })
 }
 
-module.exports.StopTimePlayer= function StopTimePlayer(GameID,PegionID,FinishedTime,DeviceID){
+module.exports.StopTimeRacer= function StopTimeRacer(GameID,PegionID,FinishedTime,DeviceID){
     connect().then(() => {
         // add record
         return nSQL("Race")
@@ -66,7 +66,7 @@ module.exports.StopTimePlayer= function StopTimePlayer(GameID,PegionID,FinishedT
       console.log(error);
     })
 }
-module.exports.SelectPlayersOfGameWithAssociation= function SelectPlayersOfGameWithAssociation(GameID,AssciationID){
+module.exports.SelectRacersOfGameWithAssociation= function SelectRacersOfGameWithAssociation(GameID,AssciationID){
     connect().then(() => {
         // add record
         return nSQL("Race")
@@ -104,7 +104,7 @@ module.exports.EndGame= function EndGame(GameID){//clear out the memory for the 
     })
 }
 
-module.exports.EndGame= function EndGame(GameID){//clear out the memory for the game
+module.exports.CompletedRacers= function CompletedRacers(GameID){//clear out the memory for the game
     connect().then(() => {
         // add record
         return nSQL("Race")
