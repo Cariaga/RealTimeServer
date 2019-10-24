@@ -46,7 +46,7 @@ module.exports.UpsertRacer = function UpsertRacer(GameID,PegionID,Location,Finis
         // add record
         return nSQL("Race")
         .query("upsert", {GameID: GameID, PegionID: PegionID, Location: Location, FinishedTime: FinishedTime, DeviceID: DeviceID, AssciationID: AssciationID})
-        .where(['GameID'=GameID,'and',['PegionID'=PegionID]])
+        .where(['GameID','=',GameID,'and','PegionID','=',PegionID])
         .exec();
     })
     .catch((error)=>{
@@ -116,7 +116,7 @@ module.exports.TotalCompletedRacersByAssociationGameID= function TotalCompletedR
       console.log(error);
     })
 }
-module.exports.TotalActiveRacesByAssociation= function TotalActiveRacesByAssociation(){
+module.exports.TotalActiveRacesGroupByAssociation= function TotalActiveRacesGroupByAssociation(){
   connect().then(() => {
       // add record
       return nSQL("Race")
@@ -134,6 +134,30 @@ module.exports.TotalActiveAssociation= function TotalActiveAssociation(){
       return nSQL("Race")
       .query("select(*)")
       .where(['GameID'=GameID])
+      .exec();
+  })
+  .catch((error)=>{
+    console.log(error);
+  })
+}
+module.exports.TotalActiveRacers= function TotalActiveRacers(){
+  connect().then(() => {
+      // add record
+      return nSQL("Race")
+      .query("select(*)")
+      .where(['FinishedTime','not',''])
+      .exec();
+  })
+  .catch((error)=>{
+    console.log(error);
+  })
+}
+module.exports.TotalActivePlayers= function TotalActivePlayers(){
+  connect().then(() => {
+      // add record
+      return nSQL("Race")
+      .query("select(*)")
+      .where(['GameID','=',GameID])
       .exec();
   })
   .catch((error)=>{

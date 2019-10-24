@@ -22,6 +22,14 @@ describe("Real Time Server", function() {
         expect(bytes).equals(2620000);
             });
     });
+    
+    describe("Expected Data", function() {
+        const gameControlller = require('../Shared/gameController');
+        it("Try to Insert",async function() {
+            
+            console.log(gameControlller.UpsertRacer('GM1','Peg','','','dev1','ass'));
+        });
+    })
 });
 
 
