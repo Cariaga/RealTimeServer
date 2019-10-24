@@ -10,7 +10,7 @@ nSQL("Race") // table name
     {key: "Location", type: "string"},
     {key: "FinishedTime", type: "string"},
     {key: "DeviceID", type: "string"},
-    {key: "AssciationID", type: "string"},
+    {key: "AssciationID", type: "string"}
 ])
 .config({
     mode: new RedisAdapter({ // required
@@ -91,24 +91,36 @@ module.exports.SelectPlayersOfGame= function SelectPlayersOfGame(GameID){
       console.log(error);
     })
 }
+module.exports.EndGame= function EndGame(GameID){//clear out the memory for the game
+    connect().then(() => {
+        // add record
+        return nSQL("Race")
+        .query("delete")
+        .where(['GameID'=GameID])
+        .exec();
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+}
+
+module.exports.EndGame= function EndGame(GameID){//clear out the memory for the game
+    connect().then(() => {
+        // add record
+        return nSQL("Race")
+        .query("delete")
+        .where(['GameID'=GameID])
+        .exec();
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+}
+
+
 
 
 ////==========
-//this are private functions they are never public with export
-function FindAbstractKey(AbstractKey){//can be used to filter just the Pigeon and get all its properties
 
-}
-function GetAllPegionAssociationIDGameID(AssociationID,GameID){//Dual keys to make sure its for the association
-
-}
-function GetAllPegionDeviceID(DeviceID){//could be used to get all pegions pointing on one loft
-
-}
-function PigeonTimeStop(AbstractKey){//Finish and set time
-
-}
-function ClearGame(GameID){// Clean up memory this completely ends the game you can only access information via api now
-
-}
 
 ///==========
