@@ -138,8 +138,8 @@ module.exports.TotalActiveRacesGroupByAssociation= function TotalActiveRacesGrou
       .exec();
 }
 module.exports.ActiveAssociation= function ActiveAssociation(){
-       return nSQL().observable(() => {
-       return nSQL("Race").model(Columns).config({
+
+return nSQL("Race").model(Columns).config({
         mode: new RedisAdapter({ // required
             // identical to config object for https://www.npmjs.com/package/redis
             host: "localhost"
@@ -147,11 +147,13 @@ module.exports.ActiveAssociation= function ActiveAssociation(){
         })
       .query("select",["AssociationID"])
       .where(['AssociationID','!=',""])
-      .emit();
-}).subscribe((rows) => {
-        console.log(rows);
-        // Update view here, this will be called each time the "users" table changes
-    })
+      .exec().then((rows)=>{
+        const Enumerable = require('node-enumerable');
+        let seq4 = Enumerable.from(rows).groupBy(x=>x.AssociationID).select(x=>{x.AssociationID,x.count()});
+        //Wrong!
+                console.log(seq4);
+                return seq4;
+        });
 }
 module.exports.TotalActiveRacers= function TotalActiveRacers(){
 
@@ -177,3 +179,4 @@ module.exports.TotalActivePlayers= function TotalActivePlayers(){
     .where(['FinishedTime','=',""])
       .exec().catch(e=>e);
 }
+

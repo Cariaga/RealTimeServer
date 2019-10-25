@@ -125,7 +125,7 @@ describe("Real Time Server", function() {
 
          it("Try count ActiveAssociation ",async function() {
            let x=  await gameControlller.ActiveAssociation()
-          //  console.log(x);
+          
          });
          it("Try count TotalActivePlayers ",async function() {
             await gameControlller.TotalActivePlayers()

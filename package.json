@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@nano-sql/core": "^2.3.7",
+    "array-operations": "^1.1.0",
     "byteof": "^0.1.1",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
@@ -26,6 +27,7 @@
     "nano-sql": "^1.8.5",
     "nanoid": "^2.1.6",
     "needle": "^2.4.0",
+    "node-enumerable": "^5.0.1",
     "path": "^0.12.7",
     "pretty-error": "^2.1.1",
     "redis": "2.8.0",
