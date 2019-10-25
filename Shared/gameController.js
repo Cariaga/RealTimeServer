@@ -1,16 +1,21 @@
+const now = new Date();
 
 var redis = require('redis').createClient()
 const helmet = require('helmet');
 const nSQL = require("nano-sql").nSQL;
 const RedisAdapter = require("nano-redis").RedisAdapter;
 const Columns = [ // data model
-  {key: "GameID", type: "string", props: ["pk"]}, // primary key
+  {key: "AbstractKey", type: "string", props: ["pk"]},
+  {key: "PlayerID",type:"string"}, 
+  {key: "GameID", type: "string"}, // primary key
   {key: "PegionID", type: "string"},
   {key: "Location", type: "string"},
   {key: "FinishedTime", type: "string"},
   {key: "DeviceID", type: "string"},
-  {key: "AssciationID", type: "string"}
+  {key: "AssociationID", type: "string"}
 ];
+
+//important you can do upsert select delete drop but not Insert
 
 
 //this redis adoptor can't be put to a variable it will not execute 
@@ -34,35 +39,36 @@ module.exports.SelectAllRaces = function SelectAllRaces(){
       .query("select").exec();//use then to access  the result over the caller
 }
 
-module.exports.UpsertRacer = function UpsertRacer(GameID,PegionID,Location,FinishedTime,DeviceID,AssciationID){
-  
+module.exports.UpsertRacer = function UpsertRacer(AbstractKey,PlayerID,GameID,PegionID,Location,FinishedTime,DeviceID,AssociationID){
+
         return nSQL("Race").model(Columns).config({
                 mode: new RedisAdapter({ // required
                     // identical to config object for https://www.npmjs.com/package/redis
                     host: "localhost"
                 })
             })
-            .query("upsert", {GameID: GameID, PegionID: PegionID, Location: Location, FinishedTime: FinishedTime, DeviceID: DeviceID, AssciationID: AssciationID})
-        //      .where(['GameID','=',GameID,'and','PegionID','=',PegionID])
+            .query("upsert", {AbstractKey:AbstractKey,PlayerID:PlayerID,GameID: GameID, PegionID: PegionID, Location: Location, FinishedTime: FinishedTime, DeviceID: DeviceID, AssociationID: AssociationID})
+     
     .exec(); // use .emit() instead of .exec()
     
 }
 
 
-module.exports.StopTimeRacer= function StopTimeRacer(GameID,PegionID,FinishedTime,DeviceID){
-  
+module.exports.StopTimeRacer= function StopTimeRacer(AbstractKey){
+
+        let Now = require('../Shared/TimeFunction').Now();
         return  nSQL("Race").model(Columns).config({
                 mode: new RedisAdapter({ // required
                     // identical to config object for https://www.npmjs.com/package/redis
                     host: "localhost"
                 })
             })
-        .query("update", {FinishedTime: FinishedTime})
-        .where(['GameID','=',GameID,'and','PegionID','=',PegionID,'and','DeviceID','=',DeviceID])
+        .query("upsert", {FinishedTime: Now})
+        .where(['AbstractKey','=',AbstractKey])
         .exec();
 
 }
-module.exports.SelectRacersOfGameWithAssociation= function SelectRacersOfGameWithAssociation(GameID,AssciationID){
+module.exports.SelectRacersOfGameWithAssociation= function SelectRacersOfGameWithAssociation(GameID,AssociationID){
         return  nSQL("Race").model(Columns).config({
                 mode: new RedisAdapter({ // required
                     // identical to config object for https://www.npmjs.com/package/redis
@@ -70,7 +76,7 @@ module.exports.SelectRacersOfGameWithAssociation= function SelectRacersOfGameWit
                 })
             })
         .query("select")
-        .where(['GameID','=',GameID,'and','AssciationID','=',AssciationID])
+        .where(['GameID','=',GameID,'and','AssociationID','=',AssociationID])
         .exec();
 }
 
@@ -131,18 +137,21 @@ module.exports.TotalActiveRacesGroupByAssociation= function TotalActiveRacesGrou
       .where([])
       .exec();
 }
-module.exports.TotalActiveAssociation= function TotalActiveAssociation(){
-
-       return  nSQL("Race").model(Columns).config({
+module.exports.ActiveAssociation= function ActiveAssociation(){
+       return nSQL().observable(() => {
+       return nSQL("Race").model(Columns).config({
         mode: new RedisAdapter({ // required
             // identical to config object for https://www.npmjs.com/package/redis
             host: "localhost"
         })
+        })
+      .query("select",["AssociationID"])
+      .where(['AssociationID','!=',""])
+      .emit();
+}).subscribe((rows) => {
+        console.log(rows);
+        // Update view here, this will be called each time the "users" table changes
     })
-      .query("select(*)")
-      .where([])
-      .exec().catch(e=>e);
-
 }
 module.exports.TotalActiveRacers= function TotalActiveRacers(){
 
@@ -152,10 +161,9 @@ module.exports.TotalActiveRacers= function TotalActiveRacers(){
             host: "localhost"
         })
     })
-      .query("select(*)")
-      .where(['FinishedTime','not',''])
+      .query("select",["count(PlayerID) AS ActiveRacers"])
+      .where(['PlayerID','!=',""])
       .exec().catch(e=>e);
-
 }
 module.exports.TotalActivePlayers= function TotalActivePlayers(){
 
@@ -165,7 +173,7 @@ module.exports.TotalActivePlayers= function TotalActivePlayers(){
             host: "localhost"
         })
     })
-      .query("select(*)")
-      .where([])
+    .query("select",["count(PlayerID) AS ActivePlayers"])
+    .where(['FinishedTime','=',""])
       .exec().catch(e=>e);
 }

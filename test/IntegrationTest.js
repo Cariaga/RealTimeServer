@@ -1,5 +1,6 @@
-var expect    = require("chai").expect;
-var should    = require("chai").should;
+const expect    = require("chai").expect;
+const should    = require("chai").should;
+const  assert  = require('chai').assert;
 describe("Real Time Server", function() {
     describe("Expected Data", function() {
     it("Try check expected data from Object to string",async function() {
@@ -21,29 +22,69 @@ describe("Real Time Server", function() {
         }
         expect(bytes).equals(2620000);
             });
+
+            it("GenerateKey",async function() {//result date 10/25/2019 12:37:48.240 PM with milisecond accuracy
+                    //similar millisecond time can happend in a forloop so make sure their is enough time diffrence between request e.g http request
+                    let moment = require('moment');            
+                    let format = 'MM/DD/YYYY h:mm:ss.SSS A';//this is internally part of TimeFunction but we use it here to validate if TimeFunction still matches the Test
+                    let result = require('../Shared/TimeFunction').Now();
+                    let isValidFormat = moment(result,format,true).isValid();//validate format
+                    expect(isValidFormat).equals(true);
+            });
+
+            it("check length of Key",async function() {
+                const nanoid = require('nanoid')
+                expect(nanoid().length).equals(21);
+              
+        });
+
     });
    
 
    describe("Redis Check", function() {
         const gameControlller = require('../Shared/gameController');
+
+        it("Try to Drop",async function() {
+           /* await gameControlller.Drop().then(()=>{
+                assert.isOk(true, 'Done');
+            }).catch(()=>{
+                assert.isOk(false, 'Fail');
+            });*/
+        });
+
         it("Try to Insert",async function() {
 
-           // await gameControlller.Drop().then(()=>console.log("Droped")).catch(()=>{console.log("Failed Drop")});
+           
 
-            await gameControlller.UpsertRacer('GM1','Peg','','','dev1','ass')
+            await gameControlller.UpsertRacer('Ab1','P1','GM1','Peg','','','dev1','ass')
             .then(()=>{
+                assert.isOk(true, 'Done');
             }).catch(e=>{
                 assert.isOk(false, 'Fail');
             });
 
 
-           await gameControlller.UpsertRacer('GM2','Peg','','','dev1','ass')
+           await gameControlller.UpsertRacer('Ab2','P2','GM2','Peg2','','','dev2','ass')
             .then(()=>{
              
-                assert.isOk(false, 'Fail')
+                assert.isOk(true, 'Done')
             }).catch(e=>{
                 assert.isOk(false, 'Fail');
-            });           
+            });
+            
+            await gameControlller.UpsertRacer('Ab3','P3','GM2','Peg3','','','dev3','')
+            .then(()=>{
+             
+                assert.isOk(true, 'Done')
+            }).catch(e=>{
+                assert.isOk(false, 'Fail');
+            });
+            await gameControlller.UpsertRacer('Ab4','P4','GM1','Peg4','','','dev4','ass')
+            .then(()=>{
+                assert.isOk(true, 'Done');
+            }).catch(e=>{
+                assert.isOk(false, 'Fail');
+            });     
           
         });
         it("Try Select ",async function() {
@@ -58,6 +99,45 @@ describe("Real Time Server", function() {
             });
           
         });
+        it("Try Finish Race ",async function() {
+            var Time = require('../Shared/TimeFunction');
+            //console.log(Time.Now());
+            await gameControlller.StopTimeRacer('Ab1')
+            .then((result)=>{
+                 
+             assert.isOk(true, 'Done')
+               // console.log(JSON.stringify(result));
+            }).catch(()=>{
+            // assert.isOk(false, 'Fail')
+             });
+           
+         });
+         it("Try Select ",async function() {
+            await gameControlller.SelectAllRaces()
+            .then((result)=>{
+                 
+             assert.isOk(true, 'Done')
+               console.log(JSON.stringify(result));
+            }).catch(e=>{
+             assert.isOk(false, 'Fail')
+             });
+         });
+
+         it("Try count ActiveAssociation ",async function() {
+           let x=  await gameControlller.ActiveAssociation()
+          //  console.log(x);
+         });
+         it("Try count TotalActivePlayers ",async function() {
+            await gameControlller.TotalActivePlayers()
+            .then((result)=>{
+                 
+             assert.isOk(true, 'Done');
+               console.log(JSON.stringify(result));
+            }).catch(e=>{
+             assert.isOk(false, 'Fail')
+             });
+         });
+
     })
 });
 
