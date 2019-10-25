@@ -23,14 +23,14 @@ Nano.connect();
 module.exports.SelectAllRaces = function SelectAllRaces(){
   //  console.log("test");
   return Nano
-      .query("select").exec();//use then to access  the result over the caller
+      .query("select").exec().then((result)=>console.log(result));//use then to access  the result over the caller
 }
 
 module.exports.UpsertRacer = function UpsertRacer(GameID,PegionID,Location,FinishedTime,DeviceID,AssciationID){
   
         return Nano
             .query("upsert", {GameID: GameID, PegionID: PegionID, Location: Location, FinishedTime: FinishedTime, DeviceID: DeviceID, AssciationID: AssciationID})
-              .where(['GameID','=',GameID,'and','PegionID','=',PegionID])
+        //      .where(['GameID','=',GameID,'and','PegionID','=',PegionID])
     .exec(); // use .emit() instead of .exec()
     
 }
