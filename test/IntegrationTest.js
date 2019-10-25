@@ -30,31 +30,33 @@ describe("Real Time Server", function() {
 
            // await gameControlller.Drop().then(()=>console.log("Droped")).catch(()=>{console.log("Failed Drop")});
 
-             gameControlller.UpsertRacer('GM2','Peg','','','dev1','ass')
+            await gameControlller.UpsertRacer('GM1','Peg','','','dev1','ass')
             .then(()=>{
-                console.log("insert Done");
-
-            
-
-            }).catch(e=>console.log(e));
+            }).catch(e=>{
+                assert.isOk(false, 'Fail');
+            });
 
 
-            gameControlller.UpsertRacer('GM2','Peg','','','dev1','ass')
+           await gameControlller.UpsertRacer('GM2','Peg','','','dev1','ass')
             .then(()=>{
-                console.log("insert Done");
-
+             
+                assert.isOk(false, 'Fail')
+            }).catch(e=>{
+                assert.isOk(false, 'Fail');
+            });           
+          
+        });
+        it("Try Select ",async function() {
             
-
-            }).catch(e=>console.log(e));
-
-            gameControlller.SelectAllRaces()
-            .then((result)=>{
-                console.log(JSON.stringify(result));
-            }).catch(e=>console.log(e));
-           
-
-           
-            expect(1).equals(1);
+           await gameControlller.SelectAllRaces()
+           .then((result)=>{
+                
+            assert.isOk(true, 'Done')
+              // console.log(JSON.stringify(result));
+           }).catch(e=>{
+            assert.isOk(false, 'Fail')
+            });
+          
         });
     })
 });

@@ -11,24 +11,37 @@ const Columns = [ // data model
   {key: "DeviceID", type: "string"},
   {key: "AssciationID", type: "string"}
 ];
-const Nano = nSQL("Race").model(Columns).config({
+
+
+//this redis adoptor can't be put to a variable it will not execute 
+//the model need to attach again to the redis adoptor when doing connect() or query()
+ nSQL("Race").model(Columns).config({
     mode: new RedisAdapter({ // required
         // identical to config object for https://www.npmjs.com/package/redis
         host: "localhost"
     })
-});
-Nano.connect();
+}).connect();
 
 
 module.exports.SelectAllRaces = function SelectAllRaces(){
   //  console.log("test");
-  return Nano
-      .query("select").exec().then((result)=>console.log(result));//use then to access  the result over the caller
+  return nSQL("Race").model(Columns).config({
+        mode: new RedisAdapter({ // required
+            // identical to config object for https://www.npmjs.com/package/redis
+            host: "localhost"
+        })
+    })
+      .query("select").exec();//use then to access  the result over the caller
 }
 
 module.exports.UpsertRacer = function UpsertRacer(GameID,PegionID,Location,FinishedTime,DeviceID,AssciationID){
   
-        return Nano
+        return nSQL("Race").model(Columns).config({
+                mode: new RedisAdapter({ // required
+                    // identical to config object for https://www.npmjs.com/package/redis
+                    host: "localhost"
+                })
+            })
             .query("upsert", {GameID: GameID, PegionID: PegionID, Location: Location, FinishedTime: FinishedTime, DeviceID: DeviceID, AssciationID: AssciationID})
         //      .where(['GameID','=',GameID,'and','PegionID','=',PegionID])
     .exec(); // use .emit() instead of .exec()
@@ -38,39 +51,69 @@ module.exports.UpsertRacer = function UpsertRacer(GameID,PegionID,Location,Finis
 
 module.exports.StopTimeRacer= function StopTimeRacer(GameID,PegionID,FinishedTime,DeviceID){
   
-        return Nano
+        return  nSQL("Race").model(Columns).config({
+                mode: new RedisAdapter({ // required
+                    // identical to config object for https://www.npmjs.com/package/redis
+                    host: "localhost"
+                })
+            })
         .query("update", {FinishedTime: FinishedTime})
         .where(['GameID','=',GameID,'and','PegionID','=',PegionID,'and','DeviceID','=',DeviceID])
         .exec();
 
 }
 module.exports.SelectRacersOfGameWithAssociation= function SelectRacersOfGameWithAssociation(GameID,AssciationID){
-        return Nano
+        return  nSQL("Race").model(Columns).config({
+                mode: new RedisAdapter({ // required
+                    // identical to config object for https://www.npmjs.com/package/redis
+                    host: "localhost"
+                })
+            })
         .query("select")
         .where(['GameID','=',GameID,'and','AssciationID','=',AssciationID])
         .exec();
 }
 
 module.exports.SelectPlayersOfGame= function SelectPlayersOfGame(GameID){
-        return Nano
+        return  nSQL("Race").model(Columns).config({
+                mode: new RedisAdapter({ // required
+                    // identical to config object for https://www.npmjs.com/package/redis
+                    host: "localhost"
+                })
+            })
         .query("select")
         .where(['GameID','=',GameID])
         .exec().catch(e=>e);
 }
 module.exports.EndGame= function EndGame(GameID){//clear out the memory for the game
-        return Nano
+        return  nSQL("Race").model(Columns).config({
+                mode: new RedisAdapter({ // required
+                    // identical to config object for https://www.npmjs.com/package/redis
+                    host: "localhost"
+                })
+            })
         .query("delete")
         .where(['GameID','=',GameID])
         .exec();
 }
 module.exports.Drop= function Drop(){//clear out the memory for the game
-        return Nano
+        return  nSQL("Race").model(Columns).config({
+                mode: new RedisAdapter({ // required
+                    // identical to config object for https://www.npmjs.com/package/redis
+                    host: "localhost"
+                })
+            })
         .query("drop")
         .exec();
 }
 module.exports.TotalCompletedRacersByAssociationGameID= function TotalCompletedRacersByAssociationGameID(GameID){//clear out the memory for the game
 
-       return Nano
+       return  nSQL("Race").model(Columns).config({
+        mode: new RedisAdapter({ // required
+            // identical to config object for https://www.npmjs.com/package/redis
+            host: "localhost"
+        })
+    })
         .query("select(*)")
         .where(['GameID','=',GameID])
         .exec();
@@ -78,14 +121,24 @@ module.exports.TotalCompletedRacersByAssociationGameID= function TotalCompletedR
 }
 module.exports.TotalActiveRacesGroupByAssociation= function TotalActiveRacesGroupByAssociation(){
 
-       return Nano
+       return  nSQL("Race").model(Columns).config({
+        mode: new RedisAdapter({ // required
+            // identical to config object for https://www.npmjs.com/package/redis
+            host: "localhost"
+        })
+    })
       .query("select(*)")
       .where([])
       .exec();
 }
 module.exports.TotalActiveAssociation= function TotalActiveAssociation(){
 
-       return Nano
+       return  nSQL("Race").model(Columns).config({
+        mode: new RedisAdapter({ // required
+            // identical to config object for https://www.npmjs.com/package/redis
+            host: "localhost"
+        })
+    })
       .query("select(*)")
       .where([])
       .exec().catch(e=>e);
@@ -93,7 +146,12 @@ module.exports.TotalActiveAssociation= function TotalActiveAssociation(){
 }
 module.exports.TotalActiveRacers= function TotalActiveRacers(){
 
-       return Nano
+       return  nSQL("Race").model(Columns).config({
+        mode: new RedisAdapter({ // required
+            // identical to config object for https://www.npmjs.com/package/redis
+            host: "localhost"
+        })
+    })
       .query("select(*)")
       .where(['FinishedTime','not',''])
       .exec().catch(e=>e);
@@ -101,7 +159,12 @@ module.exports.TotalActiveRacers= function TotalActiveRacers(){
 }
 module.exports.TotalActivePlayers= function TotalActivePlayers(){
 
-       return Nano
+       return  nSQL("Race").model(Columns).config({
+        mode: new RedisAdapter({ // required
+            // identical to config object for https://www.npmjs.com/package/redis
+            host: "localhost"
+        })
+    })
       .query("select(*)")
       .where([])
       .exec().catch(e=>e);
