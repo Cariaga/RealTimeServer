@@ -28,18 +28,30 @@ describe("Real Time Server", function() {
         const gameControlller = require('../Shared/gameController');
         it("Try to Insert",async function() {
 
-            await gameControlller.Drop().then(()=>console.log("Droped")).catch(()=>{console.log("Failed Drop")});
+           // await gameControlller.Drop().then(()=>console.log("Droped")).catch(()=>{console.log("Failed Drop")});
 
-            await gameControlller.UpsertRacer('GM2','Peg','','','dev1','ass')
+             gameControlller.UpsertRacer('GM2','Peg','','','dev1','ass')
             .then(()=>{
                 console.log("insert Done");
+
+            
+
             }).catch(e=>console.log(e));
 
 
-            await gameControlller.SelectAllRaces()
+            gameControlller.UpsertRacer('GM2','Peg','','','dev1','ass')
+            .then(()=>{
+                console.log("insert Done");
+
+            
+
+            }).catch(e=>console.log(e));
+
+            gameControlller.SelectAllRaces()
             .then((result)=>{
                 console.log(JSON.stringify(result));
             }).catch(e=>console.log(e));
+           
 
            
             expect(1).equals(1);
