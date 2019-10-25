@@ -27,8 +27,17 @@ describe("Real Time Server", function() {
    describe("Redis Check", function() {
         const gameControlller = require('../Shared/gameController');
         it("Try to Insert",async function() {
-            //gameControlller.UpsertRacer('GM1','Peg','','','dev1','ass');
-            gameControlller.SelectAllRaces();
+            gameControlller.UpsertRacer('GM2','Peg','','','dev1','ass')
+            .then(()=>{
+                console.log("insert Done");
+            });
+
+
+            gameControlller.SelectAllRaces()
+            .then((result)=>{
+                console.log(JSON.stringify(result));
+            });
+            //gameControlller.Drop();
             expect(1).equals(1);
         });
     })
