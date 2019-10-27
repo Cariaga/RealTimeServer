@@ -135,32 +135,6 @@ module.exports.Drop= function Drop(){//clear out the memory for the game
         .query("drop")
         .exec();
 }
-module.exports.TotalCompletedRacersByAssociationGameID= function TotalCompletedRacersByAssociationGameID(GameID){//clear out the memory for the game
-
-       return  nSQL("Race").model(Columns).config({
-        mode: new RedisAdapter({ // required
-            // identical to config object for https://www.npmjs.com/package/redis
-            host: "localhost"
-        })
-    })
-        .query("select(*)")
-        .where([static.GameID,'=',GameID])
-        .exec();
-}
-
-
-module.exports.TotalActiveRacesGroupByAssociation= function TotalActiveRacesGroupByAssociation(){
-
-       return  nSQL("Race").model(Columns).config({
-        mode: new RedisAdapter({ // required
-            // identical to config object for https://www.npmjs.com/package/redis
-            host: "localhost"
-        })
-    })
-      .query("select(*)")
-      .where([])
-      .exec();
-}
 module.exports.ActivePlayersByAssociation= function ActivePlayersByAssociation(){
 return nSQL("Race").model(Columns).config({
         mode: new RedisAdapter({ // required
