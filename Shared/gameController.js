@@ -146,8 +146,9 @@ module.exports.TotalCompletedRacersByAssociationGameID= function TotalCompletedR
         .query("select(*)")
         .where([static.GameID,'=',GameID])
         .exec();
-
 }
+
+
 module.exports.TotalActiveRacesGroupByAssociation= function TotalActiveRacesGroupByAssociation(){
 
        return  nSQL("Race").model(Columns).config({
@@ -312,3 +313,41 @@ module.exports.ActiveGamesPlayers= function ActiveGamesPlayers(){
                     return Groups;
    });
 }
+module.exports.AllTargetDeviceWithOngoingPigeon= function AllTargetDeviceWithOngoingPigeon(){
+    return  nSQL("Race").model(Columns).config({
+     mode: new RedisAdapter({ // required
+         // identical to config object for https://www.npmjs.com/package/redis
+         host: "localhost"
+     })
+ })
+   .query("select",["DeviceID"])
+   .where([static.FinishedTime,'=',""])
+   .exec().then((rows)=>{
+                    //flatten
+                    var DeviceIDList = rows.map(x=>x.DeviceID);
+                    //count and group by
+                    var Groups =[];
+                    for(var i=0;i<DeviceIDList.length;++i){
+                          let found =false;
+                          for(var j=0;j<Groups.length;++j){
+                              if(DeviceIDList[i]==Groups[j].DeviceID){
+                                  found =true;
+                                  break;
+                              }
+                          }
+                          if(found==false){
+                              Groups.push({DeviceID:DeviceIDList[i],Count:1});
+                          }else{
+                          for(var x=0;x<Groups.length;++x){
+                              if(Groups[x].DeviceID==DeviceIDList[i]){
+                                  Groups[x].Count++;
+                                  break;
+                              }
+                          }
+                        }
+                    }
+                     // console.log(Groups);
+                    return Groups;
+   });
+}
+

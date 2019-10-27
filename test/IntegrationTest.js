@@ -54,6 +54,8 @@ describe("Real Time Server", function() {
 
         it("Try to Insert",async function() {
             
+            
+
             await gameControlller.UpsertRacer('Ab1','P1','GM1','Peg1','','','dev1','ass')
             .then(()=>{
                 assert.isOk(true, 'Done');
@@ -88,12 +90,30 @@ describe("Real Time Server", function() {
             }).catch(e=>{
                 assert.isOk(false, 'Fail');
             });
-            await gameControlller.UpsertRacer('Ab6','P5','GM2','Peg5','','','dev2','')
+            await gameControlller.UpsertRacer('Ab6','P5','GM3','Peg6','','','dev3','')
             .then(()=>{
                 assert.isOk(true, 'Done');
             }).catch(e=>{
                 assert.isOk(false, 'Fail');
             });
+            await gameControlller.UpsertRacer('Ab7','P5','GM3','Peg7','','','dev3','')
+            .then(()=>{
+                assert.isOk(true, 'Done');
+            }).catch(e=>{
+                assert.isOk(false, 'Fail');
+            });
+            /*await gameControlller.UpsertRacer('Ab8','P5','GM3','Peg8','','','dev3','')
+            .then(()=>{
+                assert.isOk(true, 'Done');
+            }).catch(e=>{
+                assert.isOk(false, 'Fail');
+            });*/
+           /* await gameControlller.UpsertRacer('Ab9','P6','GM3','Peg9','','','dev3','')
+            .then(()=>{
+                assert.isOk(true, 'Done');
+            }).catch(e=>{
+                assert.isOk(false, 'Fail');
+            });*/
 
         });
         it("Try Select ^",async function() {
@@ -189,7 +209,22 @@ describe("Real Time Server", function() {
              assert.isOk(false, 'Fail')
              });
          });
-
+         it("Try AllTargetDeviceWithOngoingPigeon ^",async function() {
+            await gameControlller.AllTargetDeviceWithOngoingPigeon()
+            .then((rows)=>{
+                console.log(JSON.stringify(rows));
+            }).catch(e=>{
+             assert.isOk(false, 'Fail')
+             });
+         });
+         it("Try PlayersOnDevice ^",async function() {
+            await gameControlller.OnGoingPigeonsOnDevice()
+            .then((rows)=>{
+                console.log(JSON.stringify(rows));
+            }).catch(e=>{
+             assert.isOk(false, 'Fail')
+             });
+         });
 
     })
 });
