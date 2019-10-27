@@ -275,7 +275,7 @@ module.exports.ActivePlayers= function ActivePlayers(){
       });
 }
 
-module.exports.ActiveGames= function ActiveGames(){
+module.exports.ActiveGamesPlayers= function ActiveGamesPlayers(){
     return  nSQL("Race").model(Columns).config({
      mode: new RedisAdapter({ // required
          // identical to config object for https://www.npmjs.com/package/redis

@@ -88,6 +88,12 @@ describe("Real Time Server", function() {
             }).catch(e=>{
                 assert.isOk(false, 'Fail');
             });
+            await gameControlller.UpsertRacer('Ab6','P5','GM2','Peg5','','','dev2','')
+            .then(()=>{
+                assert.isOk(true, 'Done');
+            }).catch(e=>{
+                assert.isOk(false, 'Fail');
+            });
 
         });
         it("Try Select ^",async function() {
@@ -175,17 +181,15 @@ describe("Real Time Server", function() {
              assert.isOk(false, 'Fail')
              });
          });
-         it("Try ActiveGames ^",async function() {
-            await gameControlller.ActiveGames()
+         it("Try ActiveGamesPlayers ^",async function() {
+            await gameControlller.ActiveGamesPlayers()
             .then((rows)=>{
-                 
                 console.log(JSON.stringify(rows));
-            
-
             }).catch(e=>{
              assert.isOk(false, 'Fail')
              });
          });
+
 
     })
 });
