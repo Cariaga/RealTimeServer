@@ -217,15 +217,6 @@ describe("Real Time Server", function() {
              assert.isOk(false, 'Fail')
              });
          });
-         it("Try PlayersOnDevice ^",async function() {
-            await gameControlller.OnGoingPigeonsOnDevice()
-            .then((rows)=>{
-                console.log(JSON.stringify(rows));
-            }).catch(e=>{
-             assert.isOk(false, 'Fail')
-             });
-         });
-
     })
 });
 
