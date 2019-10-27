@@ -45,26 +45,29 @@ describe("Real Time Server", function() {
         const gameControlller = require('../Shared/gameController');
 
         it("Try to Drop",async function() {
-           /* await gameControlller.Drop().then(()=>{
+            await gameControlller.Drop().then(()=>{
                 assert.isOk(true, 'Done');
             }).catch(()=>{
                 assert.isOk(false, 'Fail');
-            });*/
+            });
         });
 
         it("Try to Insert",async function() {
-
-           
-
-            await gameControlller.UpsertRacer('Ab1','P1','GM1','Peg','','','dev1','ass')
+            
+            await gameControlller.UpsertRacer('Ab1','P1','GM1','Peg1','','','dev1','ass')
+            .then(()=>{
+                assert.isOk(true, 'Done');
+            }).catch(e=>{
+                assert.isOk(false, 'Fail');
+            });
+            await gameControlller.UpsertRacer('Ab2','P2','GM1','Peg2','','','dev1','ass')
             .then(()=>{
                 assert.isOk(true, 'Done');
             }).catch(e=>{
                 assert.isOk(false, 'Fail');
             });
 
-
-           await gameControlller.UpsertRacer('Ab2','P2','GM2','Peg2','','','dev2','ass')
+           await gameControlller.UpsertRacer('Ab3','P2','GM1','Peg3','','','dev1','ass')
             .then(()=>{
              
                 assert.isOk(true, 'Done')
@@ -72,28 +75,28 @@ describe("Real Time Server", function() {
                 assert.isOk(false, 'Fail');
             });
             
-            await gameControlller.UpsertRacer('Ab3','P3','GM2','Peg3','','','dev3','')
+            await gameControlller.UpsertRacer('Ab4','P3','GM1','Peg4','','','dev1','ass')
             .then(()=>{
              
                 assert.isOk(true, 'Done')
             }).catch(e=>{
                 assert.isOk(false, 'Fail');
             });
-            await gameControlller.UpsertRacer('Ab4','P4','GM1','Peg4','','','dev4','ass')
+            await gameControlller.UpsertRacer('Ab5','P4','GM1','Peg5','','','dev1','')
             .then(()=>{
                 assert.isOk(true, 'Done');
             }).catch(e=>{
                 assert.isOk(false, 'Fail');
-            });     
-          
+            });
+
         });
-        it("Try Select ",async function() {
+        it("Try Select ^",async function() {
             
            await gameControlller.SelectAllRaces()
-           .then((result)=>{
+           .then((rows)=>{
                 
-            assert.isOk(true, 'Done')
-              // console.log(JSON.stringify(result));
+            console.log(JSON.stringify(rows));
+           
            }).catch(e=>{
             assert.isOk(false, 'Fail')
             });
@@ -104,35 +107,81 @@ describe("Real Time Server", function() {
             //console.log(Time.Now());
             await gameControlller.StopTimeRacer('Ab1')
             .then((result)=>{
-                 
+                  // console.log(JSON.stringify(result));
              assert.isOk(true, 'Done')
-               // console.log(JSON.stringify(result));
+              
             }).catch(()=>{
             // assert.isOk(false, 'Fail')
              });
            
          });
-         it("Try Select ",async function() {
+         it("Try Select ^",async function() {
             await gameControlller.SelectAllRaces()
-            .then((result)=>{
+            .then((rows)=>{
                  
-             assert.isOk(true, 'Done')
-               console.log(JSON.stringify(result));
+                console.log( JSON.stringify(rows));
+     
             }).catch(e=>{
              assert.isOk(false, 'Fail')
              });
          });
 
-         it("Try count ActiveAssociation ",async function() {
-           let x=  await gameControlller.ActiveAssociation()
-          
+         it("Try Active Players By Association ^",async function() {
+           let x=  await gameControlller.ActivePlayersByAssociation()
+           .then((rows)=>{
+            console.log(JSON.stringify(rows));
+            });
+                
          });
-         it("Try count TotalActivePlayers ",async function() {
-            await gameControlller.TotalActivePlayers()
-            .then((result)=>{
+         it("Try Active Player Pigeon No Assoication ^",async function() {
+            let x=  await gameControlller.ActivePlayerPigeonNoAssoication()
+            .then((rows)=>{
+             console.log(JSON.stringify(rows));
+             });
                  
-             assert.isOk(true, 'Done');
-               console.log(JSON.stringify(result));
+          });
+          it("Try Active Player Pigeon Has Assoication ^",async function() {
+            let x=  await gameControlller.ActivePlayerPigeonHasAssoication()
+            .then((rows)=>{
+             console.log(JSON.stringify(rows));
+             });
+                 
+          });
+         it("Try ActivePlayers ^",async function() {
+            await gameControlller.ActivePlayers()
+            .then((rows)=>{
+                console.log(JSON.stringify(rows));
+            }).catch(e=>{
+             assert.isOk(false, 'Fail')
+             });
+         });
+
+         it("Try TotalActiveRacers ^",async function() {
+            await gameControlller.TotalActiveRacers().then((rows)=>{
+
+                console.log(JSON.stringify(rows));
+               
+            });
+         });
+         
+         it("Try Select ^",async function() {
+            await gameControlller.SelectAllRaces()
+            .then((rows)=>{
+                 
+                console.log(JSON.stringify(rows));
+            
+
+            }).catch(e=>{
+             assert.isOk(false, 'Fail')
+             });
+         });
+         it("Try ActiveGames ^",async function() {
+            await gameControlller.ActiveGames()
+            .then((rows)=>{
+                 
+                console.log(JSON.stringify(rows));
+            
+
             }).catch(e=>{
              assert.isOk(false, 'Fail')
              });
