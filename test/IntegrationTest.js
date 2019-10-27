@@ -11,16 +11,11 @@ describe("Real Time Server", function() {
                     let isValidFormat = moment(result,format,true).isValid();//validate format
                     expect(isValidFormat).equals(true);
             });
-
             it("check length of Key",async function() {
                 const nanoid = require('nanoid')
                 expect(nanoid().length).equals(21);
-              
         });
-
     });
-   
-
    describe("Redis Check", function() {
         const gameControlller = require('../Shared/gameController');
 
