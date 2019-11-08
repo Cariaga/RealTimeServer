@@ -1,0 +1,44 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+<script>
+
+
+
+    var socket = io("http://localhost:3000/Player-namespace?token=abc2");//or set inside http://localhost
+    socket.on('connect', function(){});
+    socket.on('Event', function(data){
+        console.log('event '+data);
+    });
+    socket.on('disconnect', function(){});
+    //===========server ping latancies=========
+    var latency = 0;
+    //latancies over 50 is slow connection on realtime games like fps  
+    //you wont notice latancies on games rearly updates even on 200 latancies
+    socket.on('pong', function(ms) {
+    latency = ms;
+    var d = Date(Date.now());
+
+    console.log(d+" "+latency+" ms");
+    });
+    //========================================
+
+    //==========Error handling=================
+    socket.on('error', function(err){
+        console.error(err);
+    // do something with err
+    });
+    //========================================
+    
+    function TriggerChipCheck(){
+        socket.emit('ChipKey', 'IKSPFKCLAPSOFEWF');
+    }
+
+
+    //=========Inside room==================
+
+    
+
+
+
+</script>
+
+<button onclick="TriggerChipCheck()">Click me</button>

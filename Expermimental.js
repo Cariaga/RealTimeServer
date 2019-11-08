@@ -23,4 +23,4 @@ var CronJob = require('cron-cluster')(redis).CronJob
     })
     job.start()
   }
-  
+  */

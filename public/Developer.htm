@@ -1,0 +1,67 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+<script>
+
+
+
+    var socket = io("http://localhost:3000/Developer-namespace?token=abc2");//or set inside http://localhost
+    socket.on('connect', function(){});
+    socket.on('Event', function(data){
+        console.log('event '+data);
+    });
+    socket.on('disconnect', function(){});
+    //===========server ping latancies=========
+    var latency = 0;
+    //latancies over 50 is slow connection on realtime games like fps  
+    //you wont notice latancies on games rearly updates even on 200 latancies
+    socket.on('pong', function(ms) {
+    latency = ms;
+    var d = Date(Date.now());
+
+    console.log(d+" "+latency+" ms");
+    });
+    socket.on('Races', function (result) {
+        console.log(result);
+        document.getElementById("Racers").innerHTML = JSON.stringify(result);
+      });
+
+    //========================================
+
+    //==========Error handling=================
+    socket.on('error', function(err){
+        console.error(err);
+    // do something with err
+    });
+    //========================================
+    function TriggerChipCheck(){
+        socket.emit('ChipKey', 'IKSPFKCLAPSOFEWF');
+    }
+    function AddRacer(){
+        let data = {
+            AbstractKey:Math.random(),
+            PlayerID:"PlayerIDData",
+            GameID:"GameIDData",
+            PigeonID:"PigeonIDData",
+            Location:"LocationData",
+            FinishedTime:"FinishedTimeData",
+            DeviceID:"DeviceIDData",
+            AssociationID:"AssociationIDData"}
+
+    socket.emit('AddRacer',data);
+    }
+    function EndGame(){
+        let data = {
+            GameID:"GameIDData"}
+        socket.emit('EndGame',data);
+    }
+  
+
+    //=========Inside room==================
+
+    
+
+
+
+</script>
+<button onclick="AddRacer()">AddRacer</button>
+<button onclick="EndGame()">EndGame</button>
+<p id="Racers"></p>

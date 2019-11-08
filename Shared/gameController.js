@@ -18,7 +18,7 @@ const Columns = [ // data model
   {key: static.DeviceID, type: "string"},
   {key: static.AssociationID, type: "string"}
 ];
-console.log("Columns Length "+Columns.length)
+//console.log("Columns Length "+Columns.length)
 //important you can do upsert select delete drop but not Insert
 
 
@@ -49,7 +49,7 @@ module.exports.UpsertRacer = function UpsertRacer(
     GameID,
     PigeonID,
     Location,
-    FinishedTime,
+    FinishedTime,//an api route already exist to call over 
     DeviceID,
     AssociationID){
 
@@ -76,7 +76,7 @@ module.exports.UpsertRacer = function UpsertRacer(
     
 }
 
-
+//deprecation we end time via http route
 module.exports.StopTimeRacer= function StopTimeRacer(AbstractKey){
 
         let Now = require('../Shared/TimeFunction').Now();
@@ -125,6 +125,7 @@ module.exports.EndGame= function EndGame(GameID){//clear out the memory for the 
         .where([static.GameID,'=',GameID])
         .exec();
 }
+
 module.exports.Drop= function Drop(){//clear out the memory for the game
         return  nSQL("Race").model(Columns).config({
                 mode: new RedisAdapter({ // required
